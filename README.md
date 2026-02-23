@@ -16,6 +16,7 @@
       text-align: center;
       overflow: hidden;
       color: #fff;
+      cursor: none; /* hide default cursor for more magic */
     }
 
     h1 {
@@ -53,20 +54,21 @@
       to { opacity: 1; }
     }
 
-    /* Floating hearts */
+    /* Heart style */
     .heart {
       position: absolute;
-      font-size: 2rem;
-      animation: float 6s linear infinite;
+      font-size: 20px;
+      pointer-events: none;
+      animation: floatUp 6s linear infinite;
       opacity: 0.8;
       color: #ff4d6d;
-      pointer-events: none;
+      transform: translateY(0);
     }
 
-    @keyframes float {
-      0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0.8; }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0.8; }
       50% { opacity: 1; }
-      100% { transform: translateY(-10vh) scale(1) rotate(360deg); opacity: 0; }
+      100% { transform: translateY(-300px) scale(1) rotate(360deg); opacity: 0; }
     }
   </style>
 </head>
@@ -82,22 +84,33 @@
     const name = "Amaka";
     document.getElementById("name").textContent = name;
 
-    // Create floating hearts
-    function createHeart() {
+    // Function to create a heart
+    function createHeart(x, y) {
       const heart = document.createElement('div');
       heart.classList.add('heart');
       heart.textContent = '❤️';
-      heart.style.left = Math.random() * window.innerWidth + 'px';
-      heart.style.fontSize = (15 + Math.random() * 30) + 'px';
+      heart.style.left = x - 10 + 'px';
+      heart.style.top = y - 10 + 'px';
+      heart.style.fontSize = (15 + Math.random() * 25) + 'px';
       heart.style.animationDuration = (4 + Math.random() * 4) + 's';
       document.body.appendChild(heart);
 
       setTimeout(() => {
         heart.remove();
-      }, 8000);
+      }, 6000);
     }
 
-    setInterval(createHeart, 500);
+    // Create hearts on mouse move
+    document.addEventListener('mousemove', (e) => {
+      createHeart(e.clientX, e.clientY);
+    });
+
+    // Optional: create random hearts over time
+    setInterval(() => {
+      const x = Math.random() * window.innerWidth;
+      const y = window.innerHeight + 20;
+      createHeart(x, y);
+    }, 500);
   </script>
 </body>
 </html>
