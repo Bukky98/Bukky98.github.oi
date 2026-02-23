@@ -16,7 +16,7 @@
       text-align: center;
       overflow: hidden;
       color: #fff;
-      cursor: none; /* hide default cursor for more magic */
+      cursor: none; /* hide cursor for fun effect */
     }
 
     h1 {
@@ -43,6 +43,8 @@
       transition: transform 0.3s, background-color 0.3s;
       animation: fadeIn 4s ease-in-out forwards;
       opacity: 0;
+      margin: 10px;
+      position: relative;
     }
 
     button:hover {
@@ -76,7 +78,8 @@
   <div>
     <h1>Hello <span id="name"></span>!</h1>
     <p>Will you be my girl?</p>
-    <button onclick="alert('Yay! 💖')">Yes 💕</button>
+    <button id="yesBtn">Yes 💕</button>
+    <button id="noBtn">No 😢</button>
   </div>
 
   <script>
@@ -84,7 +87,7 @@
     const name = "Amaka";
     document.getElementById("name").textContent = name;
 
-    // Function to create a heart
+    // Function to create hearts
     function createHeart(x, y) {
       const heart = document.createElement('div');
       heart.classList.add('heart');
@@ -95,22 +98,38 @@
       heart.style.animationDuration = (4 + Math.random() * 4) + 's';
       document.body.appendChild(heart);
 
-      setTimeout(() => {
-        heart.remove();
-      }, 6000);
+      setTimeout(() => heart.remove(), 6000);
     }
 
-    // Create hearts on mouse move
+    // Floating hearts on mouse move
     document.addEventListener('mousemove', (e) => {
       createHeart(e.clientX, e.clientY);
     });
 
-    // Optional: create random hearts over time
+    // Random hearts over time
     setInterval(() => {
       const x = Math.random() * window.innerWidth;
       const y = window.innerHeight + 20;
       createHeart(x, y);
     }, 500);
+
+    // Buttons behavior
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+
+    // Yes button click
+    yesBtn.addEventListener('click', () => {
+      alert("I'm so happy you said yes! 💖");
+    });
+
+    // No button avoids click
+    noBtn.addEventListener('mouseenter', () => {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    });
   </script>
 </body>
 </html>
